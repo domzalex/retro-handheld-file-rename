@@ -1,0 +1,17 @@
+import pathlib
+import re
+
+rom_root = pathlib.Path('/my/rom/root/folder/')
+
+folders_to_rename = ['gb', 'gbc', 'gba', 'megadrive', 'msx', 'n64',
+                     'nds', 'nes', 'ngp', 'pcengine', 'snes']
+
+# There are always 3 digits and then a dot or a space
+pattern = r'[0-9]{3}[. ]'
+
+# Rename everything in folders specified
+for fold in folders_to_rename:
+    tmp_fold = rom_root / fold
+    for p in tmp_fold.iterdir():
+        if re.match(pattern, p.stem) is not None:
+            p.rename(p.with_name(re.sub(pattern, '', p.name)))
