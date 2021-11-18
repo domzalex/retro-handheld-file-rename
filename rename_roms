@@ -2,11 +2,13 @@
 
 import pathlib
 import re
+import os
 
 
 default_folders_to_rename = ['gb', 'gbc', 'gba', 'megadrive', 'msx', 'n64',
                              'nds', 'nes', 'ngp', 'pcengine', 'snes']
-pattern = r'[0-9]{3}[. ]'
+pattern = r'^[0-9]{3}[. ]'
+fpattern = r'([^0-9 ])[0-9]{3}[. ]'
 
 rom_root = input('Please specify rom root (e.g., /media/hdd1/roms/  or C:\\users\\thomas\\roms\\):')
 rom_root = pathlib.Path(rom_root)
@@ -18,6 +20,18 @@ else:
 
 for fold in folders_to_rename:
     tmp_fold = rom_root / fold
+    print('Process', tmp_fold)
+    for p in tmp_fold.iterdir():
+        if re.match(pattern, p.stem) is not None:
+            p.rename(p.with_name(re.sub(pattern, '', p.name)))
+    fout = open(tmp_fold / 'gamelist.xml.tmp', 'w')
+    fin = open(tmp_fold / 'gamelist.xml')
+    for l in fin:
+        fout.write(re.sub(fpattern, r'\1', l))
+    fout.close()
+    fin.close()
+    os.rename(tmp_fold / 'gamelist.xml.tmp', tmp_fold / 'gamelist.xml')
+    tmp_fold = rom_root / fold / 'images'
     print('Process', tmp_fold)
     for p in tmp_fold.iterdir():
         if re.match(pattern, p.stem) is not None:
