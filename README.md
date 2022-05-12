@@ -1,6 +1,13 @@
 # retro-handheld-file-rename
 A quick/rudimentary way to remove the 'numbering' from the front of game files to help order alphabetically
 
+###################################
+
+FOLLOWING INFORMATION ONLY RELEVANT
+FOR 'rename-simple.py' SCRIPT
+
+###################################
+
 VIDEO GUIDE: https://youtu.be/VP2iPfSrzIw
 
 EASY TEXT GUIDE:
